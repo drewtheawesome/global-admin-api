@@ -73,20 +73,25 @@ app.delete("/ban/:userid", async (req, res) => {
 
 // CHECK IF USER IS ADMIN
 app.get("/admin/:userid", async (req, res) => {
+    // FIX: Pass the raw string directly. Supabase handles the int8 string conversion safely.
+    // Alternatively, use BigInt(req.params.userid).toString() to prevent JS float corruption.
+    const targetUserId = req.params.userid;
+
     const { data, error } = await supabase
         .from("admins")
         .select("*")
-        .eq("userid", Number(req.params.userid))
+        .eq("userid", targetUserId) 
         .maybeSingle();
 
-    console.log("userid:", req.params.userid);
-    console.log("data:", data);
-    console.log("error:", error);
+    console.log("Incoming raw text userid:", req.params.userid);
+    console.log("Supabase response data:", data);
+    if (error) console.error("Supabase error:", error);
 
     res.json({
         admin: data !== null
     });
 });
+
 
 
 app.listen(3000, () => {

@@ -12,6 +12,8 @@ const supabase = createClient(
     process.env.SUPABASE_KEY
 );
 
+
+// CHECK IF PLAYER IS BANNED
 app.get("/ban/:userid", async (req, res) => {
     const { data } = await supabase
         .from("bans")
@@ -24,6 +26,8 @@ app.get("/ban/:userid", async (req, res) => {
     });
 });
 
+
+// BAN PLAYER
 app.post("/ban", async (req, res) => {
     const userid = req.body.userid;
 
@@ -45,6 +49,8 @@ app.post("/ban", async (req, res) => {
     });
 });
 
+
+// UNBAN PLAYER
 app.delete("/ban/:userid", async (req, res) => {
 
     const { error } = await supabase
@@ -63,6 +69,22 @@ app.delete("/ban/:userid", async (req, res) => {
         success: true
     });
 });
+
+
+// CHECK IF USER IS ADMIN
+app.get("/admin/:userid", async (req, res) => {
+
+    const { data } = await supabase
+        .from("admins")
+        .select("userid")
+        .eq("userid", req.params.userid)
+        .maybeSingle();
+
+    res.json({
+        admin: data !== null
+    });
+});
+
 
 app.listen(3000, () => {
     console.log("Server running on port 3000");

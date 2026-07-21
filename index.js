@@ -73,12 +73,15 @@ app.delete("/ban/:userid", async (req, res) => {
 
 // CHECK IF USER IS ADMIN
 app.get("/admin/:userid", async (req, res) => {
-
-    const { data } = await supabase
+    const { data, error } = await supabase
         .from("admins")
-        .select("userid")
-        .eq("userid", req.params.userid)
+        .select("*")
+        .eq("userid", Number(req.params.userid))
         .maybeSingle();
+
+    console.log("userid:", req.params.userid);
+    console.log("data:", data);
+    console.log("error:", error);
 
     res.json({
         admin: data !== null

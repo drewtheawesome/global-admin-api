@@ -45,6 +45,25 @@ app.post("/ban", async (req, res) => {
     });
 });
 
+app.delete("/ban/:userid", async (req, res) => {
+
+    const { error } = await supabase
+        .from("bans")
+        .delete()
+        .eq("userid", req.params.userid);
+
+    if (error) {
+        return res.json({
+            success: false,
+            error: error.message
+        });
+    }
+
+    res.json({
+        success: true
+    });
+});
+
 app.listen(3000, () => {
     console.log("Server running on port 3000");
 });

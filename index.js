@@ -24,6 +24,27 @@ app.get("/ban/:userid", async (req, res) => {
     });
 });
 
+app.post("/ban", async (req, res) => {
+    const userid = req.body.userid;
+
+    const { error } = await supabase
+        .from("bans")
+        .insert({
+            userid: userid
+        });
+
+    if (error) {
+        return res.json({
+            success: false,
+            error: error.message
+        });
+    }
+
+    res.json({
+        success: true
+    });
+});
+
 app.listen(3000, () => {
     console.log("Server running on port 3000");
 });

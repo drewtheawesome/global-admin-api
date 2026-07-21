@@ -12,6 +12,9 @@ const supabase = createClient(
     process.env.SUPABASE_KEY
 );
 
+console.log("SUPABASE_URL:", process.env.SUPABASE_URL);
+console.log("HAS_KEY:", !!process.env.SUPABASE_KEY);
+
 
 // CHECK IF PLAYER IS BANNED
 app.get("/ban/:userid", async (req, res) => {

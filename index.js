@@ -5,6 +5,8 @@ const { createClient } = require("@supabase/supabase-js");
 
 const app = express();
 
+app.use(express.json());
+
 const supabase = createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_KEY
